@@ -6,7 +6,6 @@ You will get a folder "ns-2.31" under ns-allinone-2.31 which will have all the r
 This folder will also contain the xgraph binary, move it to the /usr/bin/ if needed.
 
 ## Installing
-### Steps to install the required software.
 
 Install ns2
 ```
@@ -25,9 +24,9 @@ sudo apt install xgraph
 ```
 cd ns-allinone-2.31/ns-2.31/tcl/<new-folder>/
 ```
-Place all the .tcl files into the "new-folder" folder, run them suitable command.
+Place all the .tcl files into the "new-folder" folder, run them with suitable command.
 ### NOTE
-For the wireless programs (GSM and CDMA) place the .tcl files in the wireless-scripts directory. Change directory with the following command.
+For the wireless programs (GSM and CDMA) place the .tcl files in the wireless-scripts directory. Change directory with the following command. *Do not create a new folder here*.
 ```
 cd ns-allinone-2.31/ns-2.31/tcl/ex/wireless-scripts/
 ```
