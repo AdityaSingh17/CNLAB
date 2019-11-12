@@ -1,86 +1,70 @@
 // Write a program to find the shortest path between vertices using Bellman ford algorithm.
 
-import java.util.Scanner;
-public class Bellman 
+import java.io.*;
+import java.util.*;
+import java.io.DataInputStream;
+
+class Edge
 {
-    private int num_ver;
-    private int[] d;
-    public static final int max_val = 999;
-
-    public Bellman(int num_ver) 
+    int source;
+    int dest;
+    int weight;
+}
+class Bellman
+{
+    public static void BellmanFord(Edge edges[], int edgecount, int nodecount, int source)
     {
-        this.num_ver = num_ver;
-        d = new int[num_ver + 1];
-    }
-
-    public void bellmanFord(int source, int[][] a) 
-    {
-        for(int node=1; node<=num_ver; node++) 
+        int infinity=50000;
+        int i, j;
+        int distance[]=new int[nodecount];
+        for(i=0; i<nodecount; i++)
+        distance[i]=infinity;
+        distance[source]=0;
+        for(i=0; i<nodecount; i++)
         {
-            d[node] = max_val;
-        }
-
-        d[source] = 0;
-
-        for(int node=1; node<=num_ver-1; node++) 
-        {
-            for(int sn=1; sn<=num_ver; sn++) 
+            boolean somethingchanged=false;
+            for(j=0; j<edgecount; j++)
             {
-                for(int dn=1; dn<=num_ver; dn++) 
+                if(distance[edges[j].source]!=infinity)
                 {
-                    if(a[sn][dn] != max_val) 
+                    int new_distance=distance[edges[j].source]+edges[j].weight;
+                    if(new_distance<distance[edges[j].dest])
                     {
-                        if(d[dn] > d[sn] + a[sn][dn]) 
-                        {
-                            d[dn] = d[sn] + a[sn][dn];
-                        }
+                        distance[edges[j].dest]=new_distance;
+                        somethingchanged=true;
                     }
                 }
             }
+            if(!somethingchanged)
+            break;
         }
-
-        for(int sn=1; sn<=num_ver; sn++) 
+        for(i=0; i<edgecount; ++i)
         {
-            for(int dn=1; dn<=num_ver; dn++) 
-            {
-                if(a[sn][dn] != max_val) 
-                {
-                    if(d[dn] > d[sn] + a[sn][dn]) 
-                    {
-                        System.out.println("\nGraph contains negative edge cycle.\n");
-                    }
-                }
-            }
+        if(distance[edges[i].dest]>distance[edges[i].source]+edges[i].weight)
+        System.out.println("Negative edge weight cycles detected!!!");
         }
-
-        for(int vertex=1; vertex<=num_ver; vertex++) 
-        {
-            System.out.println("Distance of source " + source + " to vertex " + vertex + " is: " + d[vertex]);
-        }
+        for(i=0; i<nodecount; ++i)
+        System.out.println("The shortest distance between nodes "+source+" & "+i+" is "+distance[i]);
     }
-
-    public static void main(String[] args) 
+    public static void main(String args[])
     {
-        int source;
-        int num_ver;
-        int[][] a;
-        Scanner sc = new Scanner(System.in);
-
-        System.out.println("Enter no. of vertices:");
-        num_ver = sc.nextInt();
-
-        a = new int[num_ver + 1][num_ver + 1];
-
-        System.out.println("Enter adjacency matrix:");
-        for(int sn=1; sn<=num_ver; sn++)
-            for(int dn=1; dn<=num_ver; dn++)
-                a[sn][dn] = sc.nextInt();
-
-        System.out.println("Enter source vertex:");
-        source = sc.nextInt();
-
-        Bellman b = new Bellman(num_ver);
-        b.bellmanFord(source, a);
-        sc.close();
+        Scanner in=new Scanner(System.in);
+        Edge edges[]=new Edge[16];
+        for( int i=0; i<16; i++)
+        {
+            edges[i]=new Edge();
+            // The edges have to be entered in Source-Destination-Weight format. 
+            // If source and destination are same then weight = 0. (1-1-0,2-2-0)
+            // If there is no edge between source and destination, then weight = 999.
+            // This is for a graph with four vertices. The starting vertex is 1.
+            System.out.print("Enter source: ");
+            edges[i].source=in.nextInt();
+            System.out.print("Enter destination: ");
+            edges[i].dest=in.nextInt();
+            System.out.print("Enter weight: ");
+            edges[i].weight=in.nextInt();
+            System.out.println();
+        }
+        BellmanFord(edges, 16, 5, 1);
     }
 }
